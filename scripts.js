@@ -142,10 +142,7 @@ function isSalaryThisMonth(date1, date2)
 }
 
 
-// Update header text
-//document.querySelector('#header').innerHTML = message
-//var currDate = new Date()
-var currDate = new Date(2023,11,6)
+var currDate = new Date()
 currDate.setHours(0, 0, 0, 0)
 
 const salaryDateThisMonth = salaryDateForThisMonth(currDate)
