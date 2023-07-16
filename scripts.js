@@ -1,5 +1,6 @@
 //Months are counted from 0 - 11
-const pulicHolidaysSRB = [new Date(2023,10,11)]
+const pulicHolidaysSRB = [new Date(2023,10,11), new Date(2024,0,1), new Date(2024,0,2), new Date(2024,0,7), new Date(2024,1,15), new Date(2024,1,16), new Date(2024,5,1), new Date(2024,5,2), new Date(2024,5,3), new Date(2024,5,6), new Date(2024,10,11)]
+
 const lengthPH = pulicHolidaysSRB.length;
 
 function dateToDMY(date) 
@@ -124,8 +125,12 @@ function isSalaryThisMonth(date1, date2)
 	var y2 = date2.getFullYear()
 	var m2 = date2.getMonth()
 	var d2 = date2.getDate()
+	
+    if(m1 == m2 && m1 == 0)
+    {
+		return 3
+    }
     
-	//We are not in December, calculate normally
 	if(y1 == y2 && m1 == m2 && d1 == d2)
 	{
 		//salary is TODAY!
@@ -143,6 +148,7 @@ function isSalaryThisMonth(date1, date2)
 
 
 var currDate = new Date()
+//var currDate = new Date(2024,0,1)
 currDate.setHours(0, 0, 0, 0)
 
 const salaryDateThisMonth = salaryDateForThisMonth(currDate)
@@ -192,20 +198,14 @@ else if (thisMonth == 2)
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+else if(thisMonth = 3)
+{
+        //In January, we get no paycheck (December already paid during December)
+        //Not December, calculate noramlly
+        const nextSalary = nextSalaryDate(currDate)
+        document.getElementById("header1").innerHTML = "Current date: " + dateToDMY(currDate)
+        document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(nextSalary)
+        document.getElementById("header3").innerHTML = "Days until next salary: " + dateDiffInDays(currDate, nextSalary)
+        document.getElementById("header4").innerHTML = "There's a long way to go sailor."  
+    
+}
