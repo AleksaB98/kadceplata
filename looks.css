@@ -1,8 +1,11 @@
-h1 
+body 
 {
   background-color: #000000;
   color: #ffa500;
-  
+}
+
+h1 
+{
   position:absolute;
   position: absolute;
   top: 50%;
@@ -16,9 +19,6 @@ h1
 
 h2 
 {
-  background-color: #000000;
-  color: #ffa500;
-  
   position:absolute;
   position: absolute;
   top: 50%;
