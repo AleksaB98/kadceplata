@@ -1,3 +1,4 @@
+
 body 
 {
   background-color: #000000;
@@ -15,4 +16,9 @@ body
    width: 100%;
    color: #ffa500; 
    text-align: center;
+}
+
+h2 {
+    font-weight: normal;
+    font-style: italic;
 }
