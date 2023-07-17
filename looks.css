@@ -15,10 +15,10 @@ h2
 .main
 {
     position: absolute;
+    left: 50%;
     top: 50%;
-    transform: translateY(-50%);
-  margin: 30px;
-    
+    transform: translateY(-50%,-50%);
+    margin: 30px;   
 }
 
 .header
@@ -31,8 +31,6 @@ h2
    text-align: center;
     border-top: 2px solid #ffa500;
     border-bottom: 2px solid #ffa500;
-  margin: 30px;
-  
 }
 
 .footer 
