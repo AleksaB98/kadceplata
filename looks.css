@@ -15,10 +15,10 @@ h2
 .main
 {
     position: absolute;
-  top: 50%;
+  top: 35%;
   left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+  -ms-transform: translate(-35%, -50%);
+  transform: translate(-35%, -50%);
     margin: 30px;   
 }
 
