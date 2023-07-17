@@ -24,6 +24,15 @@ h2
    text-align: center;
 }
 
+.header
+{
+   position: fixed;
+   left: 0;
+   top: 0;
+   width: 100%;
+   text-align: center;
+}
+
 .fade-in {
   animation: fadeIn ease 3s;
   -webkit-animation: fadeIn ease 3s;
