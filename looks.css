@@ -14,12 +14,12 @@ h2
 
 .main
 {
-   position: absolute;
+  position: absolute;
+  width: 100vw;
+  height: 50vh;
   top: 40%;
   left: 50%;
   transform: translate(-50%,-60%);
-  width: 100vw;
-  height: 50vh;
 }
 
 .header
