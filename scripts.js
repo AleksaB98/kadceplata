@@ -3,6 +3,8 @@ const pulicHolidaysSRB = [new Date(2023,10,11), new Date(2024,0,1), new Date(202
 
 const lengthPH = pulicHolidaysSRB.length;
 
+const decemberSalaryDate = new Date(2023,11,28)
+
 function dateToDMY(date) 
 {
 	var d = date.getDate();
@@ -59,12 +61,12 @@ function salaryDateForThisMonth(date)
 {
 	var y = date.getFullYear()
 	var m = date.getMonth()
-    	var d = date.getDate()
+    var d = date.getDate()
     
   	var workingDaysNeeded = 3
-    	var workingDaysPassed = 0
+    var workingDaysPassed = 0
 	var newDate = new Date(y, m, 1)
-    	newDate.setHours(0, 0, 0, 0)
+    newDate.setHours(0, 0, 0, 0)
     
 	while(workingDaysPassed < workingDaysNeeded)
 	{
@@ -85,18 +87,47 @@ function salaryDateForThisMonth(date)
   	return newDate
 }
 
+function nextSalaryDateIfDecemberPaid(date) 
+{
+	var y = date.getFullYear()
+	var m = date.getMonth()
+    var d = date.getDate()
+    
+  	var workingDaysNeeded = 3
+    var workingDaysPassed = 0
+	var newDate = new Date(y, m + 2, 1)
+	newDate.setHours(0, 0, 0, 0)
+
+	while(workingDaysPassed < workingDaysNeeded)
+	{
+		if(isWeeked(newDate) || isPublicHoliday(newDate))
+		{
+		    newDate.setDate(newDate.getDate() + 1)
+		}
+		else
+		{
+			workingDaysPassed++
+			if(workingDaysPassed < workingDaysNeeded)
+			{
+			newDate.setDate(newDate.getDate() + 1)
+			}
+		}
+	}
+  
+  	return newDate
+}
+
 function nextSalaryDate(date) 
 {
 	var y = date.getFullYear()
 	var m = date.getMonth()
-    	var d = date.getDate()
+    var d = date.getDate()
     
   	var workingDaysNeeded = 3
-    	var workingDaysPassed = 0
+    var workingDaysPassed = 0
 	var newDate = new Date(y, m + 1, 1)
 	newDate.setHours(0, 0, 0, 0)
-	console.log("Date - " + dateToDMY(newDate))
-
+    
 	while(workingDaysPassed < workingDaysNeeded)
 	{
 		if(isWeeked(newDate) || isPublicHoliday(newDate))
@@ -148,7 +179,7 @@ function isSalaryThisMonth(date1, date2)
 
 
 var currDate = new Date()
-//var currDate = new Date(2024,0,1)
+//var currDate = new Date(2024,2,6)
 currDate.setHours(0, 0, 0, 0)
 
 const salaryDateThisMonth = salaryDateForThisMonth(currDate)
@@ -176,16 +207,41 @@ else if (thisMonth == 2)
 	//CHECK IF DECEMBER FIRST, USUALLY WE GET IT ON 28TH
 	var currMonth = currDate.getMonth()
 	var currYear = currDate.getFullYear()
+    var currDay = currDate.getDate()
     
 	if(currMonth == 11)
 	{
-		//Usually on 28th Decemmber
-		const nextSalary = new Date(currYear, currMonth , 28)
-		document.getElementById("header1").innerHTML = "Current date: " + dateToDMY(currDate)
-		document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(nextSalary)
-		document.getElementById("header3").innerHTML = "Days until next salary: ~" + dateDiffInDays(currDate, nextSalary)
-		document.getElementById("header4").innerHTML = "December salary usually comes earlier, tipically on 28th or 29th."
-		document.getElementById("header5").innerHTML = "#ThankYouContinental"
+    	if(currDay < decemberSalaryDate.getDate())
+        {
+            //Usually on 28th Decemmber
+            const nextSalary = decemberSalaryDate
+            document.getElementById("header1").innerHTML = "Current date: " + dateToDMY(currDate)
+            document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(nextSalary)
+            document.getElementById("header3").innerHTML = "Days until next salary: ~" + dateDiffInDays(currDate, nextSalary)
+            document.getElementById("header4").innerHTML = "December salary usually comes earlier, tipically on 28th or 29th."
+            document.getElementById("header5").innerHTML = "#ThankYouContinental"
+        }
+        else if (currDay == decemberSalaryDate.getDate())
+        {
+        	const nextSalary = decemberSalaryDate
+            document.getElementById("header1").innerHTML = "Current date: " + dateToDMY(currDate)
+            document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(nextSalary)
+            document.getElementById("header3").innerHTML = "Days until next salary: " + dateDiffInDays(currDate, nextSalary)
+            document.getElementById("header4").innerHTML = "HAPPY NEW YEARS PAYDAY!"
+            document.getElementById("header5").innerHTML = "#ThankYouContinental"
+        
+        }
+        else
+        {
+        	//December salary paid during December, nothing will be paid duirng Januray, add +2 to month calculation
+            const nextSalary = nextSalaryDateIfDecemberPaid(currDate)
+            document.getElementById("header1").innerHTML = "Current date: " + dateToDMY(currDate)
+            document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(nextSalary)
+            document.getElementById("header3").innerHTML = "Days until next salary: " + dateDiffInDays(currDate, nextSalary)
+            document.getElementById("header4").innerHTML = "Good luck surviving the January."
+        	
+        }
+        
 	}
 	else
 	{
