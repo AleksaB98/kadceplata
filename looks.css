@@ -21,7 +21,8 @@ h2
    bottom: 0;
    width: 100%;
    color: #9c9c9c; 
-   text-align: center;
+    border-top: 3px solid #ffa500;
+    border-bottom: 3px solid #ffa500;
 }
 
 .header
@@ -31,6 +32,8 @@ h2
    top: 0;
    width: 100%;
    text-align: center;
+    border-top: 3px solid #ffa500;
+    border-bottom: 3px solid #ffa500;
 }
 
 .fade-in {
