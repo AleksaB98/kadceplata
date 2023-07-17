@@ -6,8 +6,19 @@ body
   text-align: center;
 }
 
+h1
+{
+  font-size: min(40px, 3vh);
+}
+
+p
+{
+  font-size: min(20px, 2vh);
+}
+
 h2 
 {
+    font-size: min(30px, 2vh);
     font-weight: normal;
     font-style: italic;
 }
