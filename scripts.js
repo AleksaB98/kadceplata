@@ -191,7 +191,7 @@ if(thisMonth == 0)
 	document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(salaryDateThisMonth)
 	document.getElementById("header3").innerHTML = "Days until next salary: " + dateDiffInDays(currDate, salaryDateThisMonth)
 	document.getElementById("header4").innerHTML = "HAPPY PAYDAY!" 
-	document.getElementById("header5").innerHTML = "#ThankYouContinental"
+	
 }
 else if (thisMonth == 1)
 {
@@ -219,7 +219,7 @@ else if (thisMonth == 2)
             document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(nextSalary)
             document.getElementById("header3").innerHTML = "Days until next salary: ~" + dateDiffInDays(currDate, nextSalary)
             document.getElementById("header4").innerHTML = "December salary usually comes earlier, tipically on 28th or 29th."
-            document.getElementById("header5").innerHTML = "#ThankYouContinental"
+            
         }
         else if (currDay == decemberSalaryDate.getDate())
         {
@@ -228,7 +228,7 @@ else if (thisMonth == 2)
             document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(nextSalary)
             document.getElementById("header3").innerHTML = "Days until next salary: " + dateDiffInDays(currDate, nextSalary)
             document.getElementById("header4").innerHTML = "HAPPY NEW YEARS PAYDAY!"
-            document.getElementById("header5").innerHTML = "#ThankYouContinental"
+        
         
         }
         else
