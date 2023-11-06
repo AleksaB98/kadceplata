@@ -192,7 +192,7 @@ if(thisMonth == 0)
 	document.getElementById("header3").innerHTML = "Days until next salary: " + dateDiffInDays(currDate, salaryDateThisMonth)
 	document.getElementById("header4").innerHTML = "HAPPY PAYDAY!" 
   
-  let vid = document.getElementById("background-video");
+  	let vid = document.getElementById("background-video");
 	vid.src = "FallingMoneyVideo.mp4";
 	
 }
