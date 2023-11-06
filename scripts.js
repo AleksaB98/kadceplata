@@ -193,8 +193,7 @@ if(thisMonth == 0)
 	document.getElementById("header4").innerHTML = "HAPPY PAYDAY!" 
   
   	let vid = document.getElementById("background-video");
-	//vid.src = "https://github.com/AleksaB98/kadceplata/raw/main/FallingMoneyVideo.mp4";
-	vid.src = "https://gemoo.com/tools/upload-video/share/580104760122920960?codeId=DW2o2yrZZ6oye&card=580104754833903616";
+	vid.src = "https://github.com/AleksaB98/kadceplata/raw/main/FallingMoneyVideo.mp4";
 }
 else if (thisMonth == 1)
 {
