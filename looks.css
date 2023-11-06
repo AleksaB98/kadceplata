@@ -43,6 +43,7 @@ h2
    text-align: center;
     border-top: 2px solid #ffa500;
     border-bottom: 2px solid #ffa500;
+    background-color: #000000;
 }
 
 .footer 
@@ -56,6 +57,7 @@ h2
    color: #b3b1b1;
     border-top: 2px solid #ffa500;
     border-bottom: 2px solid #ffa500;
+    background-color: #000000;
 }
 
 .fade-in {
@@ -88,4 +90,17 @@ h2
 @-ms-keyframes fadeIn {
   0% {opacity:0;}
   100% {opacity:1;}
+}
+
+#background-video {
+  height: 100vh;
+  width: 100vw;
+  object-fit: cover;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: -1;
+  opacity: 50%;
 }
