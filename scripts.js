@@ -179,7 +179,7 @@ function isSalaryThisMonth(date1, date2)
 
 
 //var currDate = new Date()
-var currDate = new Date(2023,11,5)
+var currDate = new Date(2023,11,28)
 currDate.setHours(0, 0, 0, 0)
 
 const salaryDateThisMonth = salaryDateForThisMonth(currDate)
@@ -193,7 +193,6 @@ if(thisMonth == 0)
 	document.getElementById("header4").innerHTML = "HAPPY PAYDAY!" 
   
   	let vid = document.getElementById("background-video");
-	//vid.src = "https://github.com/AleksaB98/kadceplata/raw/main/FallingMoneyVideo.mp4?raw=true";
     vid.style.opacity = "0.5"
 }
 else if (thisMonth == 1)
@@ -231,6 +230,9 @@ else if (thisMonth == 2)
             document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(nextSalary)
             document.getElementById("header3").innerHTML = "Days until next salary: " + dateDiffInDays(currDate, nextSalary)
             document.getElementById("header4").innerHTML = "HAPPY NEW YEARS PAYDAY!"
+            
+            let vid = document.getElementById("background-video");
+    		vid.style.opacity = "0.5"
         
         
         }
