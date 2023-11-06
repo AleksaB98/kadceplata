@@ -179,7 +179,7 @@ function isSalaryThisMonth(date1, date2)
 
 
 var currDate = new Date()
-//var currDate = new Date(2024,2,6)
+//var currDate = new Date(2023,11,5)
 currDate.setHours(0, 0, 0, 0)
 
 const salaryDateThisMonth = salaryDateForThisMonth(currDate)
@@ -191,6 +191,9 @@ if(thisMonth == 0)
 	document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(salaryDateThisMonth)
 	document.getElementById("header3").innerHTML = "Days until next salary: " + dateDiffInDays(currDate, salaryDateThisMonth)
 	document.getElementById("header4").innerHTML = "HAPPY PAYDAY!" 
+  
+  let vid = document.getElementById("background-video");
+	vid.src = "https://assets.codepen.io/6093409/river.mp4";
 	
 }
 else if (thisMonth == 1)
