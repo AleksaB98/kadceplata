@@ -178,8 +178,8 @@ function isSalaryThisMonth(date1, date2)
 }
 
 
-//var currDate = new Date()
-var currDate = new Date(2023,11,28)
+var currDate = new Date()
+//var currDate = new Date(2023,11,28)
 currDate.setHours(0, 0, 0, 0)
 
 const salaryDateThisMonth = salaryDateForThisMonth(currDate)
