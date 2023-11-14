@@ -192,8 +192,8 @@ if(thisMonth == 0)
 	document.getElementById("header3").innerHTML = "Days until next salary: " + dateDiffInDays(currDate, salaryDateThisMonth)
 	document.getElementById("header4").innerHTML = "HAPPY PAYDAY!" 
   
-  	let vid = document.getElementById("background-video");
-    vid.style.opacity = "0.5"
+  	//let vid = document.getElementById("background-video");
+    //vid.style.opacity = "0.5"
 }
 else if (thisMonth == 1)
 {
@@ -231,8 +231,8 @@ else if (thisMonth == 2)
             document.getElementById("header3").innerHTML = "Days until next salary: " + dateDiffInDays(currDate, nextSalary)
             document.getElementById("header4").innerHTML = "HAPPY NEW YEARS PAYDAY!"
             
-            let vid = document.getElementById("background-video");
-    		vid.style.opacity = "0.5"
+            //let vid = document.getElementById("background-video");
+    		//vid.style.opacity = "0.5"
         
         
         }
