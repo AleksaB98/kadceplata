@@ -179,7 +179,7 @@ function isSalaryThisMonth(date1, date2)
 
 
 var currDate = new Date()
-//var currDate = new Date(2023,11,28)
+//var currDate = new Date(2023,17,33)
 currDate.setHours(0, 0, 0, 0)
 
 const salaryDateThisMonth = salaryDateForThisMonth(currDate)
@@ -189,7 +189,8 @@ if(thisMonth == 0)
 	//SALARY IS TODAY
 	document.getElementById("header1").innerHTML = "Current date: " + dateToDMY(currDate)
 	document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(salaryDateThisMonth)
-	document.getElementById("header3").innerHTML = "Days until next salary: " + dateDiffInDays(currDate, salaryDateThisMonth)
+	document.getElementById("header3").innerHTML = "Days until next salary:"
+  document.getElementById("COUNTDOWN").innerHTML = dateDiffInDays(currDate, salaryDateThisMonth)  
 	document.getElementById("header4").innerHTML = "HAPPY PAYDAY!" 
   
   	//let vid = document.getElementById("background-video");
@@ -200,7 +201,10 @@ else if (thisMonth == 1)
 	//SALARY IS THIS MONTH
 	document.getElementById("header1").innerHTML = "Current date: " + dateToDMY(currDate)
 	document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(salaryDateThisMonth)
-	document.getElementById("header3").innerHTML = "Days until next salary: " + dateDiffInDays(currDate, salaryDateThisMonth)
+
+  document.getElementById("header3").innerHTML = "Days until next salary:"
+  document.getElementById("COUNTDOWN").innerHTML = dateDiffInDays(currDate, salaryDateThisMonth)
+  
 	document.getElementById("header4").innerHTML = "Tako blizu, a tako daleko." 
 }
 else if (thisMonth == 2)
@@ -219,7 +223,10 @@ else if (thisMonth == 2)
             const nextSalary = decemberSalaryDate
             document.getElementById("header1").innerHTML = "Current date: " + dateToDMY(currDate)
             document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(nextSalary)
-            document.getElementById("header3").innerHTML = "Days until next salary: ~" + dateDiffInDays(currDate, nextSalary)
+            
+            document.getElementById("header3").innerHTML = "Days until next salary:"
+  					document.getElementById("COUNTDOWN").innerHTML = "~" + dateDiffInDays(currDate, nextSalary)
+            
             document.getElementById("header4").innerHTML = "December salary usually comes earlier, tipically on 28th or 29th."
             
         }
@@ -228,7 +235,11 @@ else if (thisMonth == 2)
         	const nextSalary = decemberSalaryDate
             document.getElementById("header1").innerHTML = "Current date: " + dateToDMY(currDate)
             document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(nextSalary)
-            document.getElementById("header3").innerHTML = "Days until next salary: " + dateDiffInDays(currDate, nextSalary)
+
+            document.getElementById("header3").innerHTML = "Days until next salary:"
+  					document.getElementById("COUNTDOWN").innerHTML = dateDiffInDays(currDate, nextSalary)
+            
+            
             document.getElementById("header4").innerHTML = "HAPPY NEW YEARS PAYDAY!"
             
             //let vid = document.getElementById("background-video");
@@ -242,7 +253,10 @@ else if (thisMonth == 2)
             const nextSalary = nextSalaryDateIfDecemberPaid(currDate)
             document.getElementById("header1").innerHTML = "Current date: " + dateToDMY(currDate)
             document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(nextSalary)
-            document.getElementById("header3").innerHTML = "Days until next salary: " + dateDiffInDays(currDate, nextSalary)
+
+            document.getElementById("header3").innerHTML = "Days until next salary:"
+  					document.getElementById("COUNTDOWN").innerHTML = dateDiffInDays(currDate, nextSalary)
+            
             document.getElementById("header4").innerHTML = "Good luck surviving the January."
         	
         }
@@ -254,7 +268,10 @@ else if (thisMonth == 2)
 		const nextSalary = nextSalaryDate(currDate)
 		document.getElementById("header1").innerHTML = "Current date: " + dateToDMY(currDate)
 		document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(nextSalary)
-		document.getElementById("header3").innerHTML = "Days until next salary: " + dateDiffInDays(currDate, nextSalary)
+
+    document.getElementById("header3").innerHTML = "Days until next salary:"
+  	document.getElementById("COUNTDOWN").innerHTML = dateDiffInDays(currDate, nextSalary)
+    
 		document.getElementById("header4").innerHTML = "There's a long way to go sailor."  
 	}
 
@@ -266,7 +283,10 @@ else if(thisMonth = 3)
         const nextSalary = nextSalaryDate(currDate)
         document.getElementById("header1").innerHTML = "Current date: " + dateToDMY(currDate)
         document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(nextSalary)
-        document.getElementById("header3").innerHTML = "Days until next salary: " + dateDiffInDays(currDate, nextSalary)
+
+        document.getElementById("header3").innerHTML = "Days until next salary:"
+  			document.getElementById("COUNTDOWN").innerHTML = dateDiffInDays(currDate, nextSalary)
+        
         document.getElementById("header4").innerHTML = "There's a long way to go sailor."  
     
 }
