@@ -1,9 +1,9 @@
 //Months are counted from 0 - 11
-const pulicHolidaysSRB = [new Date(2024,0,1), new Date(2024,0,2), new Date(2024,0,7), new Date(2024,1,15), new Date(2024,1,16), new Date(2024,4,1), new Date(2024,4,2), new Date(2024,4,3), new Date(2024,4,5), new Date(2024,4,6), new Date(2024,10,11)]
+const pulicHolidaysSRB = [new Date(2025,0,1), new Date(2025,0,2), new Date(2025,0,7), new Date(2025.1,17), new Date(2025,3,18), new Date(2025,3,21), new Date(2025,4,1), new Date(2025,4,2), new Date(2025,10,11),]
 
 const lengthPH = pulicHolidaysSRB.length;
 
-const decemberSalaryDate = new Date(2023,11,28)
+const decemberSalaryDate = new Date(2024,11,30)
 
 function dateToDMY(date) 
 {
