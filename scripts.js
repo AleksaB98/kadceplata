@@ -227,7 +227,7 @@ else if (thisMonth == 2)
             document.getElementById("header3").innerHTML = "Days until next salary:"
   					document.getElementById("COUNTDOWN").innerHTML = "~" + dateDiffInDays(currDate, nextSalary)
             
-            document.getElementById("header4").innerHTML = "December salary is paid out during December (tipically on 28-29-30th of December)."
+            document.getElementById("header4").innerHTML = "December salary is paid out during December (tipically on 28-29-30th)."
             
         }
         else if (currDay == decemberSalaryDate.getDate())
