@@ -3,7 +3,7 @@ const pulicHolidaysSRB = [new Date(2025,0,1), new Date(2025,0,2), new Date(2025,
 
 const lengthPH = pulicHolidaysSRB.length;
 
-const decemberSalaryDate = new Date(2024,11,30)
+const decemberSalaryDate = new Date(2024,11,27)
 
 function dateToDMY(date) 
 {
@@ -227,7 +227,7 @@ else if (thisMonth == 2)
             document.getElementById("header3").innerHTML = "Days until next salary:"
   					document.getElementById("COUNTDOWN").innerHTML = "~" + dateDiffInDays(currDate, nextSalary)
             
-            document.getElementById("header4").innerHTML = "December salary is paid out during December (tipically on 28-29-30th)."
+            document.getElementById("header4").innerHTML = "December salary is paid out during December (tipically from 27-29th)."
             
         }
         else if (currDay == decemberSalaryDate.getDate())
