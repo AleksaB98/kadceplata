@@ -3,7 +3,7 @@ const pulicHolidaysSRB = [new Date(2025,0,1), new Date(2025,0,2), new Date(2025,
 
 const lengthPH = pulicHolidaysSRB.length;
 
-const decemberSalaryDate = new Date(2024,11,27)
+const decemberSalaryDate = new Date(2025,11,29)
 
 function dateToDMY(date) 
 {
