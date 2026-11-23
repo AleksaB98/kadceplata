@@ -11,7 +11,7 @@ body {
 
 .site-header {
   padding: 1.1rem 1rem;
-  background: linear-gradient(to top, transparent, #0b0905 30%);
+  background: #0b0905;
   font-family: Georgia, serif;
 }
 
@@ -39,7 +39,7 @@ body {
 
 .site-footer {
   padding: 1.5rem 1rem 0.9rem;
-  background: linear-gradient(to bottom, transparent, #0b0905 30%);
+  background: #0b0905;
   overflow-wrap: anywhere;
 }
 
