@@ -1,45 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="looks.css">
-    <link rel="shortcut icon" type="image/png" href="money.png">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; media-src 'self'; base-uri 'none'; form-action 'none'">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Payday Calculator</title>
+    <link rel="stylesheet" href="looks.css?v=2">
+    <link rel="icon" type="image/png" href="money.png">
+    <script src="payday-messages.js" defer blocking="render"></script>
+    <script src="scripts.js?v=2" defer blocking="render"></script>
   </head>
-
   <body>
+    <video id="background-video" data-src="FallingMoneyVideo.mp4?v=2" muted playsinline aria-hidden="true" hidden></video>
 
-    <div class="fade-in">
-    
-              <video id="background-video" autoplay loop muted plays-inline>
-              <source src="https://github.com/AleksaB98/kadceplata/raw/main/FallingMoneyVideo.mp4" type="video/mp4">
-            </video>
-      
-          <div class="header">
-            <h1>PAYDAY CALCULATOR</h1>
-            <p>by Aleksa Bajčetić</p>
-          </div>
+    <header class="site-header">
+      <div class="site-masthead">
+        <h1>Payday Calculator</h1>
+      </div>
+    </header>
 
-          
-          <div class ="main">
-            <img src="money.png" width="128" height="128">
-  
-            <h1 id="header1"></h1>
-            <h1 id="header2"></h1>
-            <h1 id="header3"></h1>
-            <h1 id="COUNTDOWN" style="font-size:3em" ></h1>
-            <h2 id="header4"></h2>
-            
+    <main class="payday">
+      <img class="payday-icon" src="money.png" width="128" height="128" alt="">
+      <div id="payday-summary" aria-live="polite" hidden>
+        <p class="countdown">
+          <span class="countdown-label">Days until payday</span>
+          <strong class="countdown-value">
+            <span id="countdown" class="countdown-text"></span>
+            <span id="countdown-estimate" class="countdown-estimate" aria-hidden="true" hidden>~</span>
+            <span id="countdown-flaps" aria-hidden="true"></span>
+          </strong>
+          <template id="countdown-tile">
+            <span class="flip-tile">
+              <span class="flap flap-top"></span>
+              <span class="flap flap-bottom"></span>
+              <span class="flap flap-top flap-outgoing"></span>
+              <span class="flap flap-bottom flap-incoming"></span>
+            </span>
+          </template>
+        </p>
+        <p id="payday-pending" class="payday-pending" hidden>December payday is unconfirmed</p>
+        <p id="payday-message" class="payday-message"></p>
+        <dl class="payday-dates">
+          <div>
+            <dt>Today</dt>
+            <dd>
+              <time id="current-date"></time>
+              <span id="current-weekday" class="date-weekday"></span>
+            </dd>
           </div>
-      
-          <div class="footer">
-            <p>For bug reports, suggestions or any other feedback, feel free to contact aleksa.bajcetic98@gmail.com.</p>
+          <div>
+            <dt id="payday-label">Next payday</dt>
+            <dd>
+              <time id="payday-date"></time>
+              <span id="payday-date-pending" hidden>Pending</span>
+              <span id="payday-weekday" class="date-weekday"></span>
+            </dd>
           </div>
-    </div>
+        </dl>
+        <p id="payday-notice" class="payday-notice" hidden></p>
+      </div>
+      <noscript><p>Enable JavaScript to see the payday countdown.</p></noscript>
+    </main>
 
-    <script src="scripts.js"></script>
-    
+    <footer class="site-footer">
+      <a href="mailto:aleksa.bajcetic98@gmail.com">Feedback and bug reports</a>
+    </footer>
   </body>
-
 </html>

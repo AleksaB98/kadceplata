@@ -1,292 +1,295 @@
-//Months are counted from 0 - 11
-const pulicHolidaysSRB = [new Date(2026,0,1), new Date(2026,0,2), new Date(2026,0,7), new Date(2026,1,15),new Date(2026,1,16), new Date(2026,1,17), new Date(2026,3,10), new Date(2026,3,11), new Date(2026,3,12), new Date(2026,3,13), new Date(2026,4,1), new Date(2026,4,2), new Date(2026,10,11),]
+const DAY_MS = 86_400_000;
+const JANUARY = 0;
+const DECEMBER = 11;
+const DECEMBER_ESTIMATE_DAY = 29;
+const announcedDecemberPaydays = new Map([
+  [2023, 28],
+  [2024, 27],
+  [2025, 29],
+]);
 
-const lengthPH = pulicHolidaysSRB.length;
+const belgradeDateFormat = new Intl.DateTimeFormat("en-GB", {
+  timeZone: "Europe/Belgrade",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
 
-const decemberSalaryDate = new Date(2025,11,29)
+const weekdayFormat = new Intl.DateTimeFormat("en-GB", {
+  timeZone: "UTC",
+  weekday: "long",
+});
 
-function dateToDMY(date) 
-{
-	var d = date.getDate();
-	var m = date.getMonth() + 1; //Month from 0 to 11
-	var y = date.getFullYear();
-	
-	return '' + (d <= 9 ? '0' + d : d) + '.' + (m <= 9 ? '0' + m : m) + '.' + y + '.';
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+function belgradeCalendarDate(now) {
+  const parts = Object.fromEntries(
+    belgradeDateFormat.formatToParts(now).map(({ type, value }) => [type, value]),
+  );
+
+  // Store the Belgrade calendar date at UTC midnight for whole-day arithmetic.
+  return new Date(Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day)));
 }
 
-// a and b are javascript Date objects
-function dateDiffInDays(a, b) 
-{
-	const _MS_PER_DAY = 1000 * 60 * 60 * 24;
-	// Discard the time and time-zone information.
-	const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
-	const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
-	
-	return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+function dateToDMY(date) {
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  return `${day}.${month}.${date.getUTCFullYear()}.`;
 }
 
-function isPublicHoliday(newDate)
-{
-	var ph = false
-	//check if public holiday
-	for(var i = 0; i < lengthPH; i++)
-	{
-		var pbDate = pulicHolidaysSRB[i]
-		pbDate.setHours(0, 0, 0, 0)
-	
-		if(dateToDMY(newDate) === dateToDMY(pbDate))
-		{
-			//public holiday, skip
-			ph = true 
-			break
-		}
-	}    
-	
-	return ph
+function orthodoxEaster(year) {
+  // Calculate Easter in the Julian calendar, then convert it to Gregorian.
+  const lunarCorrection = (19 * (year % 19) + 15) % 30;
+  const weekdayCorrection = (2 * (year % 4) + 4 * (year % 7) - lunarCorrection + 34) % 7;
+  const julianDate = lunarCorrection + weekdayCorrection + 114;
+  const month = Math.floor(julianDate / 31);
+  const day = julianDate % 31 + 1;
+  const calendarOffset = Math.floor(year / 100) - Math.floor(year / 400) - 2;
+  return Date.UTC(year, month - 1, day + calendarOffset);
 }
 
-function isWeeked(newDate)
-{
-	if(newDate.getDay() !== 0 && newDate.getDay() !== 6)
-    	{
-    		return false 
-    	}
-    	else
-    	{
-    		return true
-    	}
-}
+function serbianPublicHolidays(year) {
+  const stateHolidays = [
+    Date.UTC(year, JANUARY, 1),
+    Date.UTC(year, JANUARY, 2),
+    Date.UTC(year, 1, 15),
+    Date.UTC(year, 1, 16),
+    Date.UTC(year, 4, 1),
+    Date.UTC(year, 4, 2),
+    Date.UTC(year, 10, 11),
+  ];
+  const easter = orthodoxEaster(year);
+  const holidays = new Set([
+    ...stateHolidays,
+    Date.UTC(year, JANUARY, 7),
+    easter - 2 * DAY_MS,
+    easter - DAY_MS,
+    easter,
+    easter + DAY_MS,
+  ]);
 
-function salaryDateForThisMonth(date) 
-{
-	var y = date.getFullYear()
-	var m = date.getMonth()
-    var d = date.getDate()
-    
-  	var workingDaysNeeded = 3
-    var workingDaysPassed = 0
-	var newDate = new Date(y, m, 1)
-    newDate.setHours(0, 0, 0, 0)
-    
-	while(workingDaysPassed < workingDaysNeeded)
-	{
-		if(isWeeked(newDate) || isPublicHoliday(newDate))
-		{
-		    newDate.setDate(newDate.getDate() + 1)
-		}
-		else
-		{
-			workingDaysPassed++
-		    	if(workingDaysPassed < workingDaysNeeded)
-		    	{
-				newDate.setDate(newDate.getDate() + 1)
-		    	}
-		}
-	}
-  
-  	return newDate
-}
-
-function nextSalaryDateIfDecemberPaid(date) 
-{
-	var y = date.getFullYear()
-	var m = date.getMonth()
-    var d = date.getDate()
-    
-  	var workingDaysNeeded = 3
-    var workingDaysPassed = 0
-	var newDate = new Date(y, m + 2, 1)
-	newDate.setHours(0, 0, 0, 0)
-
-	while(workingDaysPassed < workingDaysNeeded)
-	{
-		if(isWeeked(newDate) || isPublicHoliday(newDate))
-		{
-		    newDate.setDate(newDate.getDate() + 1)
-		}
-		else
-		{
-			workingDaysPassed++
-			if(workingDaysPassed < workingDaysNeeded)
-			{
-			newDate.setDate(newDate.getDate() + 1)
-			}
-		}
-	}
-  
-  	return newDate
-}
-
-function nextSalaryDate(date) 
-{
-	var y = date.getFullYear()
-	var m = date.getMonth()
-    var d = date.getDate()
-    
-  	var workingDaysNeeded = 3
-    var workingDaysPassed = 0
-	var newDate = new Date(y, m + 1, 1)
-	newDate.setHours(0, 0, 0, 0)
-    
-	while(workingDaysPassed < workingDaysNeeded)
-	{
-		if(isWeeked(newDate) || isPublicHoliday(newDate))
-		{
-		    newDate.setDate(newDate.getDate() + 1)
-		}
-		else
-		{
-			workingDaysPassed++
-			if(workingDaysPassed < workingDaysNeeded)
-			{
-			newDate.setDate(newDate.getDate() + 1)
-			}
-		}
-	}
-  
-  	return newDate
-}
-
-function isSalaryThisMonth(date1, date2) 
-{
-	var y1 = date1.getFullYear()
-	var m1 = date1.getMonth()
-	var d1 = date1.getDate()
-	
-	var y2 = date2.getFullYear()
-	var m2 = date2.getMonth()
-	var d2 = date2.getDate()
-	
-    if(m1 == m2 && m1 == 0)
-    {
-		return 3
+  for (const holiday of stateHolidays) {
+    if (new Date(holiday).getUTCDay() !== 0) {
+      continue;
     }
-    
-	if(y1 == y2 && m1 == m2 && d1 == d2)
-	{
-		//salary is TODAY!
-		return 0
-	}
-	else if(y1 == y2 && m1 == m2 && d1 > d2)
-	{
-		return 1
-	}
-	else if(y1 == y2 && m1 == m2 && d1 < d2)
-	{
-		return 2
-	}
+
+    // A Sunday state holiday carries over to the next working day.
+    let observed = new Date(holiday + DAY_MS);
+    while (!isWorkingDay(observed, holidays)) {
+      observed = new Date(observed.getTime() + DAY_MS);
+    }
+    holidays.add(observed.getTime());
+  }
+
+  return holidays;
 }
 
-
-var currDate = new Date()
-//var currDate = new Date(2023,17,33)
-currDate.setHours(0, 0, 0, 0)
-
-const salaryDateThisMonth = salaryDateForThisMonth(currDate)
-var thisMonth = isSalaryThisMonth(salaryDateThisMonth, currDate)
-if(thisMonth == 0)
-{
-	//SALARY IS TODAY
-	document.getElementById("header1").innerHTML = "Current date: " + dateToDMY(currDate)
-	document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(salaryDateThisMonth)
-	document.getElementById("header3").innerHTML = "Days until next salary:"
-  document.getElementById("COUNTDOWN").innerHTML = dateDiffInDays(currDate, salaryDateThisMonth)  
-	document.getElementById("header4").innerHTML = "HAPPY PAYDAY!" 
-  
-  	//let vid = document.getElementById("background-video");
-    //vid.style.opacity = "0.5"
+function isWorkingDay(date, holidays) {
+  const weekday = date.getUTCDay();
+  return weekday !== 0 && weekday !== 6 && !holidays.has(date.getTime());
 }
-else if (thisMonth == 1)
-{
-	//SALARY IS THIS MONTH
-	document.getElementById("header1").innerHTML = "Current date: " + dateToDMY(currDate)
-	document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(salaryDateThisMonth)
 
-  document.getElementById("header3").innerHTML = "Days until next salary:"
-  document.getElementById("COUNTDOWN").innerHTML = dateDiffInDays(currDate, salaryDateThisMonth)
-  
-	document.getElementById("header4").innerHTML = "Tako blizu, a tako daleko." 
+function regularPayday(year, month) {
+  const holidays = serbianPublicHolidays(year);
+  const date = new Date(Date.UTC(year, month, 1));
+  let workingDays = Number(isWorkingDay(date, holidays));
+  while (workingDays < 3) {
+    date.setUTCDate(date.getUTCDate() + 1);
+    workingDays += Number(isWorkingDay(date, holidays));
+  }
+  return date;
 }
-else if (thisMonth == 2)
-{
-	//SALARAY WAS ALREADY PAID THIS MONTH, CALCULATE NEXT MONTH SALARY DATE
-	//CHECK IF DECEMBER FIRST, USUALLY WE GET IT ON 28TH
-	var currMonth = currDate.getMonth()
-	var currYear = currDate.getFullYear()
-    var currDay = currDate.getDate()
-    
-	if(currMonth == 11)
-	{
-    	if(currDay < decemberSalaryDate.getDate())
-        {
-            //Usually on 28th Decemmber
-            const nextSalary = decemberSalaryDate
-            document.getElementById("header1").innerHTML = "Current date: " + dateToDMY(currDate)
-            document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(nextSalary)
-            
-            document.getElementById("header3").innerHTML = "Days until next salary:"
-  					document.getElementById("COUNTDOWN").innerHTML = "~" + dateDiffInDays(currDate, nextSalary)
-            
-            document.getElementById("header4").innerHTML = "December salary is paid out during December (tipically from 27-29th)."
-            
-        }
-        else if (currDay == decemberSalaryDate.getDate())
-        {
-        	const nextSalary = decemberSalaryDate
-            document.getElementById("header1").innerHTML = "Current date: " + dateToDMY(currDate)
-            document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(nextSalary)
 
-            document.getElementById("header3").innerHTML = "Days until next salary:"
-  					document.getElementById("COUNTDOWN").innerHTML = dateDiffInDays(currDate, nextSalary)
-            
-            
-            document.getElementById("header4").innerHTML = "HAPPY NEW YEARS PAYDAY!"
-            
-            //let vid = document.getElementById("background-video");
-    		//vid.style.opacity = "0.5"
-        
-        
-        }
-        else
-        {
-        	//December salary paid during December, nothing will be paid duirng Januray, add +2 to month calculation
-            const nextSalary = nextSalaryDateIfDecemberPaid(currDate)
-            document.getElementById("header1").innerHTML = "Current date: " + dateToDMY(currDate)
-            document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(nextSalary)
+function earlyDecemberPayday(year) {
+  const announcedDay = announcedDecemberPaydays.get(year);
+  const date = new Date(Date.UTC(year, DECEMBER, announcedDay ?? DECEMBER_ESTIMATE_DAY));
+  if (announcedDay !== undefined) {
+    return { date };
+  }
 
-            document.getElementById("header3").innerHTML = "Days until next salary:"
-  					document.getElementById("COUNTDOWN").innerHTML = dateDiffInDays(currDate, nextSalary)
-            
-            document.getElementById("header4").innerHTML = "Good luck surviving the January."
-        	
-        }
-        
-	}
-	else
-	{
-		//Not December, calculate noramlly
-		const nextSalary = nextSalaryDate(currDate)
-		document.getElementById("header1").innerHTML = "Current date: " + dateToDMY(currDate)
-		document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(nextSalary)
-
-    document.getElementById("header3").innerHTML = "Days until next salary:"
-  	document.getElementById("COUNTDOWN").innerHTML = dateDiffInDays(currDate, nextSalary)
-    
-		document.getElementById("header4").innerHTML = "There's a long way to go sailor."  
-	}
-
+  const holidays = serbianPublicHolidays(year);
+  while (!isWorkingDay(date, holidays)) {
+    date.setUTCDate(date.getUTCDate() - 1);
+  }
+  return { date, estimated: true };
 }
-else if(thisMonth = 3)
-{
-        //In January, we get no paycheck (December already paid during December)
-        //Not December, calculate noramlly
-        const nextSalary = nextSalaryDate(currDate)
-        document.getElementById("header1").innerHTML = "Current date: " + dateToDMY(currDate)
-        document.getElementById("header2").innerHTML = "Next salary date: " + dateToDMY(nextSalary)
 
-        document.getElementById("header3").innerHTML = "Days until next salary:"
-  			document.getElementById("COUNTDOWN").innerHTML = dateDiffInDays(currDate, nextSalary)
-        
-        document.getElementById("header4").innerHTML = "There's a long way to go sailor."  
-    
+function nextPayday(today) {
+  const year = today.getUTCFullYear();
+  const month = today.getUTCMonth();
+
+  if (month === JANUARY) {
+    return { date: regularPayday(year, 1) };
+  }
+
+  const thisMonth = regularPayday(year, month);
+  if (today <= thisMonth) {
+    return { date: thisMonth };
+  }
+
+  if (month === DECEMBER) {
+    const december = earlyDecemberPayday(year);
+    if (today <= december.date) {
+      return december;
+    }
+    return { date: december.estimated ? null : regularPayday(year + 1, 1) };
+  }
+
+  return { date: regularPayday(year, month + 1) };
 }
+
+let displayedDate;
+
+function showDate(dateId, weekdayId, date) {
+  const element = document.getElementById(dateId);
+  element.dateTime = date.toISOString().slice(0, 10);
+  element.textContent = dateToDMY(date);
+  document.getElementById(weekdayId).textContent = weekdayFormat.format(date);
+}
+
+function setTileValue(tile, digit) {
+  const [top, bottom] = tile.children;
+  top.dataset.value = digit;
+  bottom.dataset.value = digit;
+}
+
+async function flipDigit(tile, from, to, halfDuration) {
+  if (from === to) {
+    return;
+  }
+
+  const [top, bottom, outgoing, incoming] = tile.children;
+  top.dataset.value = to;
+  outgoing.dataset.value = from;
+  incoming.dataset.value = to;
+
+  const fold = outgoing.animate([
+    { visibility: "visible", transform: "rotateX(0deg)", filter: "brightness(1)", easing: "ease-in" },
+    { visibility: "visible", transform: "rotateX(-26deg)", filter: "brightness(0.89)", offset: 0.45 },
+    { visibility: "visible", transform: "rotateX(-90deg)", filter: "brightness(0.55)" },
+  ], { duration: halfDuration });
+  const land = incoming.animate([
+    { visibility: "visible", transform: "rotateX(90deg)", filter: "brightness(0.62)", easing: "ease-out" },
+    { visibility: "visible", transform: "rotateX(25deg)", filter: "brightness(0.94)", offset: 0.55, easing: "ease-out" },
+    { visibility: "visible", transform: "rotateX(0deg)", filter: "brightness(1)" },
+  ], { duration: halfDuration, delay: halfDuration });
+
+  await Promise.allSettled([fold.finished, land.finished]);
+  bottom.dataset.value = to;
+}
+
+async function showCountdown(daysUntilPayday, estimated) {
+  const count = document.getElementById("countdown");
+  const previousValue = count.textContent;
+  const nextValue = `${estimated ? "~" : ""}${daysUntilPayday}`;
+  if (previousValue === nextValue) {
+    return;
+  }
+  count.textContent = nextValue;
+  document.getElementById("countdown-estimate").hidden = !estimated;
+
+  const flaps = document.getElementById("countdown-flaps");
+  const template = document.getElementById("countdown-tile").content.firstElementChild;
+  let steps = [daysUntilPayday];
+  if (!reducedMotion.matches && typeof flaps.animate === "function") {
+    steps = previousValue
+      ? [Number(previousValue.replace("~", "")), daysUntilPayday]
+      : [3, 2, 1, 0].map(offset => daysUntilPayday + offset);
+  }
+
+  const width = Math.max(2, ...steps.map(value => String(value).length));
+  const values = steps.map(value => String(value).padStart(width, "0"));
+  const tiles = Array.from(values[0], digit => {
+    const tile = template.cloneNode(true);
+    setTileValue(tile, digit);
+    return tile;
+  });
+  flaps.replaceChildren(...tiles);
+
+  for (let index = 1; index < values.length; index += 1) {
+    if (reducedMotion.matches) {
+      const finalDigits = values.at(-1);
+      tiles.forEach((tile, position) => setTileValue(tile, finalDigits[position]));
+      return;
+    }
+    const halfDuration = index === values.length - 1 ? 135 : 90;
+    await Promise.all(tiles.map((tile, position) =>
+      flipDigit(tile, values[index - 1][position], values[index][position], halfDuration)
+    ));
+    if (count.textContent !== nextValue) {
+      return;
+    }
+  }
+}
+
+function renderCountdown() {
+  const today = belgradeCalendarDate(new Date());
+  if (today.getTime() === displayedDate) {
+    return;
+  }
+
+  const payday = nextPayday(today);
+  const pending = payday.date === null;
+  const countdown = document.querySelector(".countdown");
+  const message = document.getElementById("payday-message");
+  const notice = document.getElementById("payday-notice");
+
+  showDate("current-date", "current-weekday", today);
+  document.getElementById("payday-label").textContent =
+    payday.estimated ? "Estimated payday" : "Next payday";
+  document.getElementById("payday-date").hidden = pending;
+  document.getElementById("payday-date-pending").hidden = !pending;
+  document.getElementById("payday-pending").hidden = !pending;
+  countdown.hidden = pending;
+  message.hidden = pending;
+
+  notice.textContent = pending
+    ? "The estimate has passed. The next regular payday is in February."
+    : payday.estimated ? "December payday is an estimate until the employer announces the date." : "";
+  notice.hidden = !notice.textContent;
+  document.getElementById("payday-summary").hidden = false;
+  displayedDate = today.getTime();
+
+  if (pending) {
+    document.getElementById("countdown").textContent = "";
+    document.getElementById("payday-weekday").textContent = "";
+    return;
+  }
+
+  const daysUntilPayday = (payday.date - today) / DAY_MS;
+  showDate("payday-date", "payday-weekday", payday.date);
+  countdown.classList.toggle("is-payday", daysUntilPayday === 0 && !payday.estimated);
+  message.textContent = pickPaydayMessage(daysUntilPayday, payday.estimated);
+  showCountdown(daysUntilPayday, payday.estimated);
+}
+
+function setupBackgroundVideo() {
+  const video = document.getElementById("background-video");
+
+  function applyMotionPreference() {
+    video.hidden = reducedMotion.matches;
+    if (reducedMotion.matches) {
+      video.pause();
+      return;
+    }
+
+    if (!video.hasAttribute("src")) {
+      video.src = video.dataset.src;
+    }
+    // The countdown works even if autoplay is blocked.
+    if (!video.ended) {
+      video.play().catch(() => {});
+    }
+  }
+
+  video.addEventListener("error", () => {
+    video.hidden = true;
+  });
+  reducedMotion.addEventListener("change", applyMotionPreference);
+  applyMotionPreference();
+}
+
+renderCountdown();
+window.setInterval(renderCountdown, 30_000);
+document.addEventListener("visibilitychange", renderCountdown);
+setupBackgroundVideo();
