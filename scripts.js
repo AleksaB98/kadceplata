@@ -265,6 +265,7 @@ function renderCountdown() {
 
 function setupBackgroundVideo() {
   const video = document.getElementById("background-video");
+  video.defaultPlaybackRate = 0.7;
 
   function applyMotionPreference() {
     video.hidden = reducedMotion.matches;
@@ -276,6 +277,7 @@ function setupBackgroundVideo() {
     if (!video.hasAttribute("src")) {
       video.src = video.dataset.src;
     }
+    video.playbackRate = video.defaultPlaybackRate;
     // The countdown works even if autoplay is blocked.
     if (!video.ended) {
       video.play().catch(() => {});
