@@ -265,7 +265,7 @@ function renderCountdown() {
 
 function setupBackgroundVideo() {
   const video = document.getElementById("background-video");
-  video.defaultPlaybackRate = 0.7;
+  video.defaultPlaybackRate = 0.9;
 
   function applyMotionPreference() {
     video.hidden = reducedMotion.matches;
