@@ -1,12 +1,16 @@
-const DAY_MS = 86_400_000;
-const JANUARY = 0;
-const DECEMBER = 11;
-const DECEMBER_ESTIMATE_DAY = 29;
+// EDIT HERE when the late-December payday is confirmed.
+// Add [year, day of December] below. For December 30, 2026, add [2026, 30].
+// Leave the year out until the date is confirmed. The site will show an estimate.
 const announcedDecemberPaydays = new Map([
   [2023, 28],
   [2024, 27],
   [2025, 29],
 ]);
+
+const DAY_MS = 86_400_000;
+const JANUARY = 0;
+const DECEMBER = 11;
+const DECEMBER_ESTIMATE_DAY = 29;
 
 const belgradeDateFormat = new Intl.DateTimeFormat("en-GB", {
   timeZone: "Europe/Belgrade",
